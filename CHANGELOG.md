@@ -1,5 +1,18 @@
 # fmp-dev-orchestrator — Changelog
 
+## v1.3 — 2026-07-05 (updated 2026-07-05, pre-release)
+
+- **`fmp-dev-gate` renamed to `fmp-dev-design-patterns`** — every routing reference in the
+  description, body, ecosystem map, and disclosure example updated; the row now describes its
+  configurable design-pattern layer.
+- **Plugin catalog counts made durable.** The BE and MBS rows previously quoted live counts
+  that went stale whenever those catalogs were rebuilt (the MBS row still said "7,370
+  functions across 233 components" after that skill's v1.3 grew to a larger catalog). Both
+  rows now describe the catalogs without exact numbers and point at each skill's own
+  reference files for current counts. The `claris-filemaker-pro` rows keep their exact
+  counts (215 steps / 368 functions) deliberately — per Developer, that's the one reference
+  where the routing table should state the numbers.
+
 ## v1.2 — 2026-07-01 (updated 2026-07-04)
 
 ### Fixed — 2026-07-04 accuracy pass (no version bump; v1.2 not yet on GitHub)

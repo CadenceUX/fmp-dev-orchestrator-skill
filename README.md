@@ -18,7 +18,7 @@ or function syntax.
 
 ## What it does NOT contain
 
-No scripting patterns, boilerplate, or rules — those all live in `fmp-dev-gate`. No function
+No scripting patterns, boilerplate, or rules — those all live in `fmp-dev-design-patterns`. No function
 or step reference data — that lives in the reference skills below. No XML generation logic of
 its own — that lives in the three XML skills below.
 
@@ -26,7 +26,7 @@ its own — that lives in the three XML skills below.
 
 | Skill | What it covers |
 |---|---|
-| `fmp-dev-gate` | All scripting patterns, boilerplate, and project-configured functions |
+| `fmp-dev-design-patterns` | All scripting patterns, conventions, boilerplate, and project-configured functions |
 | `claris-filemaker-pro` | Script step syntax, calculation functions, ExecuteSQL |
 | `goya-be-plugin` | BaseElements Plugin `BE_*` functions |
 | `monkeybread-mbs-plugin` | MBS Plugin functions |
