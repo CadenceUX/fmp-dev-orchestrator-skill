@@ -1,0 +1,12 @@
+{
+  "name": "fmp-dev-orchestrator",
+  "displayName": "FileMaker Skill Orchestrator",
+  "version": "2.0.0",
+  "description": "Routes Claris FileMaker work to the skill or tool that owns it, including the Claris Agentic Development Toolkit (ADT) for anything that reads or changes the file.",
+  "author": { "name": "Darrin Southern", "url": "https://cadenceux.com.au" },
+  "homepage": "https://github.com/CadenceUX/fmp-dev-orchestrator-skill",
+  "repository": "https://github.com/CadenceUX/fmp-dev-orchestrator-skill",
+  "license": "CC-BY-4.0",
+  "keywords": ["filemaker", "claris", "routing", "adt"],
+  "skills": ["./"]
+}

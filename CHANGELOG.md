@@ -1,5 +1,34 @@
 # fmp-dev-orchestrator — Changelog
 
+## [2.0.0] — 2026-10-11
+
+Rebuilt for the Claris Agentic Development Toolkit (ADT) and Anthropic's skill authoring best
+practices, using `cadenceux-skill-creator` 2.0.0.
+
+### Changed
+
+- **ADT first.** Anything that reads or changes the FileMaker file (schema, scripts, layouts,
+  value lists, custom functions, live SQL) routes to ADT, which works on the file directly.
+  No more clipboard XML or copy-paste snippets.
+- Frontmatter to the CadenceUX standard (third-person description with "Use when" and "Not for",
+  `license`, `metadata.author`); `.claude-plugin/plugin.json` added.
+- The routing table carries no counts; each skill's own `VERSION` and catalog meta are the
+  source.
+
+### Added
+
+- Routes for `beezwax-bbox-plugin`, `cadenceux-fms-docker-setup`,
+  `cadenceux-ottofms-docker-setup` and `cadenceux-skill-creator`.
+- "Requests that span skills" section; `evals/evals.json` (4 cases, 2 near-misses).
+
+### Removed
+
+- Routes to the XML skills (`filemaker-xml`, `filemaker-field-xml`, `filemaker-layout-xml`):
+  ADT replaces clipboard XML.
+- Routes to the retired `fmp-dev-full-script`, and to `clockwork-xml-inspector` and
+  `scriptlogic-blog`, which aren't part of the CadenceUX skill set.
+- The out-of-date step count (215; Claris now documents 216).
+
 ## v1.3 — 2026-07-05 (updated 2026-07-05, pre-release)
 
 - **`fmp-dev-gate` renamed to `fmp-dev-design-patterns`** — every routing reference in the

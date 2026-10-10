@@ -1,0 +1,39 @@
+{
+  "skill": "fmp-dev-orchestrator",
+  "version": "2.0.0",
+  "notes": "Grade each answer against must / must_not. mode=adt assumes the Claris ADT plugin is installed.",
+  "cases": [
+    {
+      "id": "add-field-adt",
+      "mode": "adt",
+      "prompt": "Add a Status field to the Invoices table and put it on the Invoice Detail layout.",
+      "must": ["routes the change through ADT", "no clipboard or fmxmlsnippet XML"],
+      "must_not": ["generates fmxmlsnippet XML", "routes to filemaker-field-xml or filemaker-layout-xml"]
+    },
+    {
+      "id": "bbox-python",
+      "mode": "any",
+      "prompt": "Which skill do I use to run a Python script from FileMaker with bBox?",
+      "must": ["beezwax-bbox-plugin"],
+      "must_not": ["says no skill covers bBox"]
+    },
+    {
+      "id": "server-otto",
+      "mode": "any",
+      "prompt": "I need FileMaker Server running in Docker on my Mac, with OttoFMS on top.",
+      "must": ["cadenceux-fms-docker-setup first", "then cadenceux-ottofms-docker-setup"],
+      "must_not": ["routes to a skill that doesn't exist"]
+    },
+    {
+      "id": "retired-skill",
+      "mode": "any",
+      "prompt": "Generate a full script that exercises every FileMaker script step.",
+      "must": ["does not route to fmp-dev-full-script", "uses ADT and claris-filemaker-pro, or explains no dedicated skill exists"],
+      "must_not": ["routes to fmp-dev-full-script"]
+    }
+  ],
+  "near_misses": [
+    { "id": "excel", "prompt": "Make me a pivot table in Excel.", "expect": "not triggered" },
+    { "id": "direct-syntax", "prompt": "What's the syntax of JSONSetElement?", "expect": "claris-filemaker-pro directly; the orchestrator isn't needed" }
+  ]
+}
