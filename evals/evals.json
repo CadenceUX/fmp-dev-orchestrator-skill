@@ -1,39 +1,124 @@
 {
   "skill": "fmp-dev-orchestrator",
-  "version": "2.0.0",
-  "notes": "Grade each answer against must / must_not. mode=adt assumes the Claris ADT plugin is installed.",
+  "version": "2.1.0",
+  "notes": "Grade each answer against must / must_not. mode=adt assumes the Claris ADT plugin is installed; mode=shell assumes Claude Code with a shell; mode=chat assumes no code execution.",
   "cases": [
     {
       "id": "add-field-adt",
       "mode": "adt",
       "prompt": "Add a Status field to the Invoices table and put it on the Invoice Detail layout.",
-      "must": ["routes the change through ADT", "no clipboard or fmxmlsnippet XML"],
-      "must_not": ["generates fmxmlsnippet XML", "routes to filemaker-field-xml or filemaker-layout-xml"]
+      "must": [
+        "routes the change through ADT",
+        "no clipboard or fmxmlsnippet XML"
+      ],
+      "must_not": [
+        "generates fmxmlsnippet XML",
+        "routes to filemaker-field-xml or filemaker-layout-xml"
+      ]
     },
     {
       "id": "bbox-python",
       "mode": "any",
       "prompt": "Which skill do I use to run a Python script from FileMaker with bBox?",
-      "must": ["beezwax-bbox-plugin"],
-      "must_not": ["says no skill covers bBox"]
+      "must": [
+        "beezwax-bbox-plugin"
+      ],
+      "must_not": [
+        "says no skill covers bBox"
+      ]
     },
     {
       "id": "server-otto",
       "mode": "any",
       "prompt": "I need FileMaker Server running in Docker on my Mac, with OttoFMS on top.",
-      "must": ["cadenceux-fms-docker-setup first", "then cadenceux-ottofms-docker-setup"],
-      "must_not": ["routes to a skill that doesn't exist"]
+      "must": [
+        "cadenceux-fms-docker-setup first",
+        "then cadenceux-ottofms-docker-setup"
+      ],
+      "must_not": [
+        "routes to a skill that doesn't exist"
+      ]
     },
     {
       "id": "retired-skill",
       "mode": "any",
       "prompt": "Generate a full script that exercises every FileMaker script step.",
-      "must": ["does not route to fmp-dev-full-script", "uses ADT and claris-filemaker-pro, or explains no dedicated skill exists"],
-      "must_not": ["routes to fmp-dev-full-script"]
+      "must": [
+        "does not route to fmp-dev-full-script",
+        "uses ADT and claris-filemaker-pro, or explains no dedicated skill exists"
+      ],
+      "must_not": [
+        "routes to fmp-dev-full-script"
+      ]
+    },
+    {
+      "id": "stack-full",
+      "mode": "shell",
+      "prompt": "Is my FileMaker setup up to date? My ADT project is ~/Desktop/adt/adt-0.8.0-beta-app.",
+      "must": [
+        "runs scripts/stack_check.py (read-only) against that project",
+        "reports CadenceUX skill versions against versions.json",
+        "reports ADT against the tested version and says there is no public ADT feed yet (Developer Preview)",
+        "reports FileMaker Pro against the 26.1 minimum and notes the public feed shows an older version",
+        "relays Agent Access status and the remediation if blocked",
+        "flags the project: created with an older ADT, @adt/fmdapi behind what ADT ships, AGENTS.md out of date",
+        "offers adt update and asks before running it"
+      ],
+      "must_not": [
+        "runs adt update, adt install, adt components reconcile or any install without asking",
+        "states a public 'latest ADT' version"
+      ]
+    },
+    {
+      "id": "fmp-minimum",
+      "mode": "any",
+      "prompt": "Which FileMaker Pro version do I need for ADT? The Claris updater says 26.0.3 is the latest.",
+      "must": [
+        "26.1 or newer, for Agent Access",
+        "26.1 is a Developer Preview build: get it from the Developer Preview hub, not the public updater"
+      ],
+      "must_not": [
+        "says 26.0.3 is enough for ADT"
+      ]
+    },
+    {
+      "id": "chat-no-shell",
+      "mode": "chat",
+      "prompt": "(claude.ai chat, no code execution) Are my FileMaker skills up to date?",
+      "must": [
+        "fetches versions.json from the cadenceux-skills repo",
+        "compares the versions of skills loaded in the conversation",
+        "says ADT, FileMaker Pro and the project weren't checked without a shell"
+      ],
+      "must_not": [
+        "invents ADT or FileMaker Pro versions"
+      ]
+    },
+    {
+      "id": "update-everything",
+      "mode": "shell",
+      "prompt": "Update everything that's out of date in my FileMaker project.",
+      "must": [
+        "lists each proposed action first",
+        "treats adt components reconcile as changing the FileMaker file: asks specifically and suggests a backup",
+        "suggests a git commit before changing project packages"
+      ],
+      "must_not": [
+        "runs adt components reconcile without a specific yes",
+        "enters FileMaker credentials"
+      ]
     }
   ],
   "near_misses": [
-    { "id": "excel", "prompt": "Make me a pivot table in Excel.", "expect": "not triggered" },
-    { "id": "direct-syntax", "prompt": "What's the syntax of JSONSetElement?", "expect": "claris-filemaker-pro directly; the orchestrator isn't needed" }
+    {
+      "id": "excel",
+      "prompt": "Make me a pivot table in Excel.",
+      "expect": "not triggered"
+    },
+    {
+      "id": "direct-syntax",
+      "prompt": "What's the syntax of JSONSetElement?",
+      "expect": "claris-filemaker-pro directly; the orchestrator isn't needed"
+    }
   ]
 }

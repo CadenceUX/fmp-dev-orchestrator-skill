@@ -1,25 +1,47 @@
 ---
 name: fmp-dev-orchestrator
 description: >-
-  Routing directory for the CadenceUX Claris FileMaker skill set. Maps each FileMaker
-  development topic to the skill or tool that owns it, including the Claris Agentic Development
-  Toolkit (ADT) for anything that reads or changes the FileMaker file directly. Use when unsure
-  which FileMaker skill handles a topic, when a FileMaker request spans several skills (a script
-  that calls a plugin, a server install with OttoFMS), or to see what the skill set covers. Not
-  for answering the FileMaker question itself; it hands off to the owning skill.
+  Routing directory and version check for the CadenceUX Claris FileMaker skill set. Maps each
+  FileMaker development topic to the skill or tool that owns it, including the Claris Agentic
+  Development Toolkit (ADT) for anything that reads or changes the FileMaker file, and reports
+  whether the stack is current: CadenceUX skills, ADT, FileMaker Pro (ADT needs 26.1 or newer)
+  and the ADT project's packages. Use when unsure which FileMaker skill handles a topic, when a
+  request spans several skills, at the start of FileMaker work in a session, or when asked
+  whether skills, ADT or FileMaker are up to date. Not for answering the FileMaker question
+  itself; it hands off to the owning skill.
 license: CC-BY-4.0
 compatibility: >-
   Claude.ai, Claude Desktop, Cowork and Claude Code. Routes to ADT when the Claris Agentic
-  Development Toolkit plugin is installed.
+  Development Toolkit plugin is installed. The full stack check needs Python 3 and a shell;
+  without one it checks skill versions only.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # FileMaker skill directory
 
-Routes FileMaker work to the skill or tool that owns it. Load the owning skill and answer from
-it; never answer catalog questions (syntax, plugin functions) from training data.
+Routes FileMaker work to the skill or tool that owns it, and keeps the stack current. Load the
+owning skill and answer from it; never answer catalog questions (syntax, plugin functions) from
+training data.
+
+## Step 0: stack check (once per session)
+
+On the first FileMaker task in a session, run the read-only stack check, then carry on:
+
+```bash
+python3 <this skill's folder>/scripts/stack_check.py
+```
+
+It compares installed CadenceUX skills with `versions.json` in the cadenceux-skills repo, and
+reports Claris ADT, FileMaker Pro against ADT's minimum (26.1), Agent Access, and the ADT
+project's versions (`adtMetadata`, `@adt/fmdapi`, TypeScript, Node). Summarise in one or two
+lines unless something needs action; give the full report when asked "is my stack up to date".
+Never run an update, install or `adt components reconcile` without the user's yes. No shell
+(claude.ai chat): check skill versions only, as described in the reference.
+
+Reading the results, the Developer Preview caveats and the no-shell path:
+[references/stack-check.md](references/stack-check.md).
 
 ## Step 1: is ADT available?
 
@@ -48,10 +70,11 @@ as `fm-mcp-guide` and `filemaker-help`, appear in the skill list, or its MCP too
 | FileMaker Server in Docker on macOS: install, upgrade, certificates | **`cadenceux-fms-docker-setup`** |
 | OttoFMS on a Docker-hosted FileMaker Server | **`cadenceux-ottofms-docker-setup`** (needs `cadenceux-fms-docker-setup` first) |
 | Building or updating a Claude skill | **`cadenceux-skill-creator`** (installed separately) |
+| Is the stack current: skills, ADT, FileMaker Pro version, ADT project packages | **This skill**, Step 0 |
 | FileMaker Server administration, Admin API, security, WebDirect deployment, Claris Connect, Claris Studio | No dedicated skill: fetch the live guide from `https://help.claris.com/` |
 
-For counts and versions, read the owning skill's own `VERSION` and catalog `meta` block; this
-table deliberately carries none.
+For counts and versions, read the owning skill's own `VERSION` and catalog `meta` block, or
+`versions.json`; this table deliberately carries none.
 
 ## Requests that span skills
 
