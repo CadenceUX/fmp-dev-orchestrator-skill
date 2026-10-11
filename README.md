@@ -23,8 +23,8 @@ Built and maintained by [Darrin Southern](https://www.linkedin.com/in/darrin-sou
 | Is the stack current | this skill (`scripts/stack_check.py`) |
 
 It also checks the stack once per session: installed CadenceUX skills against the latest
-releases, Claris ADT, FileMaker Pro (ADT needs 26.1 or newer) and the ADT project's package
-versions. Read-only: it reports and asks, it never updates anything itself. Ask "is my
+releases, Claris ADT, the FileMaker Pro version ADT needs, and the ADT project's package
+versions, all read from your own install. Read-only: it reports and asks, it never updates anything itself. Ask "is my
 FileMaker stack up to date?" for the full report.
 
 Topics with no dedicated skill (Server administration, security, Claris Connect, Claris Studio)

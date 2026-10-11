@@ -1,5 +1,19 @@
 # fmp-dev-orchestrator — Changelog
 
+## [2.1.1] — 2026-10-11
+
+### Changed
+
+- **No preview version numbers in published files.** Claris ADT, and the FileMaker Pro build it
+  needs, are in Claris's preview programs. The stack check no longer compares against a
+  published ADT version or FileMaker Pro minimum: it reads ADT's version, the FileMaker Pro
+  minimum ADT states, and ADT's template package versions from the user's own install, and
+  reports them only in the conversation. `versions.json` keeps public versions only.
+- SKILL.md and the reference tell the agent never to write ADT or preview FileMaker Pro version
+  numbers into files, commits or anything published. New eval case:
+  no-preview-versions-published.
+- 2.1.0's changelog, eval prompts and results rewritten without preview version numbers.
+
 ## [2.1.0] — 2026-10-11
 
 Adds the stack check: is the FileMaker agentic stack current? Built with
@@ -9,33 +23,24 @@ Adds the stack check: is the FileMaker agentic stack current? Built with
 
 - **Step 0: stack check.** `scripts/stack_check.py` (standard library, read-only) reports:
   - installed CadenceUX skills against `versions.json` in the cadenceux-skills repo, including
-    old copies the Claude desktop app keeps and retired skills to remove;
-  - Claris ADT against the version the skills were tested with (no public ADT feed yet: ADT is
-    in Developer Preview). It also looks for an ADT entry in the Claris updates feed, so the
-    comparison switches to the public version once Claris publishes one;
-  - FileMaker Pro against ADT's minimum (26.1, for Agent Access), with a note when the public
-    feed lists an older version, plus Agent Access status from `adt doctor`;
+    old copies the Claude desktop app keeps, retired skills to remove, and skills outside the
+    set;
+  - Claris ADT (no public ADT feed yet; it also looks for an ADT entry in the Claris updates
+    feed, so a public comparison starts once Claris publishes one);
+  - FileMaker Pro against the minimum ADT needs, with a note when the public feed lists an
+    older version, plus Agent Access status from `adt doctor`;
   - the ADT project: the ADT version each web viewer app was created with, `AGENTS.md`
     freshness, `@adt/fmdapi` against what the installed ADT ships, TypeScript, Node and pnpm.
 - `references/stack-check.md`: when to run it, the no-shell path, how to read each status, and
   the rule that nothing is updated without the user's yes.
 - Four eval cases (stack-full, fmp-minimum, chat-no-shell, update-everything).
 
-### Changed
-
-- Description now covers the version check; routing table row for "is the stack current".
-
 ### Verified
 
-- Evals on Haiku, Sonnet and Opus: 4/4 each on the new cases
-  (`evals/results-2026-10-11-v2.1.0.md`). Fixed from the Opus run: an `outside_set` status for
-  skills that aren't CadenceUX but aren't replaced by ADT (clockwork-inspector); how
-  `@adt/fmdapi` moves (`adt update webviewer-apps/<app>`, per ADT's own help); the check
-  reporting its own version; side-by-side FileMaker Pro copies shown as "x2".
-- Run on macOS against an ADT 0.8 project with ADT 0.10.0 and FileMaker Pro 26.1.1 installed:
-  found five out-of-date skills in the desktop app, a retired skill to remove, the project
-  created with ADT 0.8.0-beta.0, `@adt/fmdapi` 0.4.0-beta.0 against 0.4.2, and Agent Access
-  off. About three seconds.
+- Evals on Haiku, Sonnet and Opus: 4/4 each (`evals/results-2026-10-11-v2.1.0.md`).
+- Run on macOS against an ADT project created with an earlier ADT: found out-of-date skills in
+  the desktop app, the project's instructions and `@adt/fmdapi` behind the installed ADT, and
+  Agent Access off. About three seconds.
 
 ## [2.0.0] — 2026-10-11
 

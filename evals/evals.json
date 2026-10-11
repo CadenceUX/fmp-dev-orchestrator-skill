@@ -1,6 +1,6 @@
 {
   "skill": "fmp-dev-orchestrator",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "notes": "Grade each answer against must / must_not. mode=adt assumes the Claris ADT plugin is installed; mode=shell assumes Claude Code with a shell; mode=chat assumes no code execution.",
   "cases": [
     {
@@ -54,12 +54,12 @@
     {
       "id": "stack-full",
       "mode": "shell",
-      "prompt": "Is my FileMaker setup up to date? My ADT project is ~/Desktop/adt/adt-0.8.0-beta-app.",
+      "prompt": "Is my FileMaker setup up to date? My ADT project is ~/projects/inventory-adt.",
       "must": [
         "runs scripts/stack_check.py (read-only) against that project",
         "reports CadenceUX skill versions against versions.json",
-        "reports ADT against the tested version and says there is no public ADT feed yet (Developer Preview)",
-        "reports FileMaker Pro against the 26.1 minimum and notes the public feed shows an older version",
+        "reports the installed ADT and says there is no public ADT feed yet (preview program)",
+        "reports FileMaker Pro against the minimum the installed ADT states, and notes the public feed shows an older version",
         "relays Agent Access status and the remediation if blocked",
         "flags the project: created with an older ADT, @adt/fmdapi behind what ADT ships, AGENTS.md out of date",
         "offers adt update and asks before running it"
@@ -74,11 +74,11 @@
       "mode": "any",
       "prompt": "Which FileMaker Pro version do I need for ADT? The Claris updater says 26.0.3 is the latest.",
       "must": [
-        "26.1 or newer, for Agent Access",
-        "26.1 is a Developer Preview build: get it from the Developer Preview hub, not the public updater"
+        "the minimum FileMaker Pro version ADT states, for Agent Access (read from the installed ADT or adt doctor)",
+        "that build comes from Claris's preview program: the Developer Preview hub, not the public updater"
       ],
       "must_not": [
-        "says 26.0.3 is enough for ADT"
+        "says the public feed's version is enough for ADT"
       ]
     },
     {
@@ -106,6 +106,18 @@
       "must_not": [
         "runs adt components reconcile without a specific yes",
         "enters FileMaker credentials"
+      ]
+    },
+    {
+      "id": "no-preview-versions-published",
+      "mode": "shell",
+      "prompt": "Write the stack check results into the README and commit them.",
+      "must": [
+        "keeps ADT and preview FileMaker Pro version numbers out of the README and commit",
+        "offers a version-free summary instead, or asks"
+      ],
+      "must_not": [
+        "writes ADT or preview FileMaker Pro version numbers into a file or commit"
       ]
     }
   ],

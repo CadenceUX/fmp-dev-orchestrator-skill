@@ -28,7 +28,7 @@ ADT_HOME = os.path.join(HOME, "Library", "Application Support", "ADT", "MCP")
 # ---------- helpers ----------
 
 def vparse(s):
-    """'v1.9' / '26.1.1' / '0.8.0-beta.0' / '2026 (26.0.3)' -> comparable tuple, or None."""
+    """'v1.9' / '22.0.1' / '1.2.0-beta.1' / '2026 (26.0.3)' -> comparable tuple, or None."""
     if not s:
         return None
     s = str(s)
@@ -197,9 +197,36 @@ def adt_latest_from_feed(feed):
     return vnum(best)
 
 
+def adt_paths():
+    ip = read_json(os.path.join(HOME, ".claude", "plugins", "installed_plugins.json")) or {}
+    paths = [e.get("installPath", "") for e in (ip.get("plugins") or {}).get("filemaker-agentic-development@claris", []) or []]
+    return [p for p in paths + [ADT_HOME] if p and os.path.isdir(p)]
+
+
+def adt_fmp_minimum(doctor):
+    """The FileMaker Pro version the installed ADT says it needs, read locally (never published)."""
+    pat = re.compile(r"FileMaker Pro (\d+(?:\.\d+)+) or (?:newer|later)")
+    texts = []
+    for c in ((doctor or {}).get("fileMaker") or {}).get("checks", []):
+        texts += [str(x) for x in c.get("remediation", []) + [c.get("summary", "")]]
+    for t in texts:
+        m = pat.search(t)
+        if m:
+            return m.group(1)
+    found = {}
+    for root in adt_paths():
+        for path in glob.glob(os.path.join(root, "**", "*.md"), recursive=True)[:2000]:
+            try:
+                with open(path, encoding="utf-8", errors="replace") as f:
+                    for m in pat.finditer(f.read()):
+                        found[m.group(1)] = found.get(m.group(1), 0) + 1
+            except OSError:
+                pass
+    return max(found, key=lambda v: (found[v], vparse(v) or ())) if found else None
+
+
 def check_adt(versions, feed, project):
-    tw = versions.get("tested_with", {}).get("adt", {})
-    out = {"tested_with": tw.get("version"), "channel": tw.get("channel")}
+    out = {"channel": (versions.get("tested_with", {}).get("adt") or {}).get("channel")}
     adt = find_adt()
     if not adt:
         out.update(status="NOT FOUND", detail="Claris ADT is not installed on this machine (or not on PATH).")
@@ -215,12 +242,11 @@ def check_adt(versions, feed, project):
     out["latest_public"] = latest
     if latest:
         c = vcmp(out["installed"], latest)
-        out["status"] = "OK" if c == 0 else ("UPDATE" if c is not None and c < 0 else "AHEAD")
+        out["status"] = "UNKNOWN" if c is None else ("OK" if c == 0 else ("UPDATE" if c < 0 else "AHEAD"))
     else:
-        c = vcmp(out["installed"], tw.get("version"))
-        out["status"] = ("OK" if c == 0 else "NEWER THAN TESTED" if c and c > 0 else "OLDER THAN TESTED" if c else "UNKNOWN")
-        out["detail"] = ("No public ADT update feed yet (Developer Preview). Compared with the version these skills "
-                         "were tested with. Check the Developer Preview hub for new builds.")
+        out["status"] = "INSTALLED (preview)"
+        out["detail"] = ("ADT is in Claris's preview programs and has no public update feed yet, so there's no "
+                         "published latest version to compare with. Check the Developer Preview hub for new builds.")
     code, so, se = run([adt, "doctor", "--json"], cwd=project or HOME, timeout=120)
     doc = None
     try:
@@ -259,7 +285,7 @@ def feed_latest(feed, product, platform_name):
 
 
 def check_fmp(versions, feed, doctor):
-    need = versions.get("tested_with", {}).get("adt", {}).get("requires_filemaker_pro")
+    need = adt_fmp_minimum(doctor)
     plat = "Mac" if sys.platform == "darwin" else ("Win" if os.name == "nt" else None)
     apps = fmp_installed()
     newest = None
@@ -272,11 +298,12 @@ def check_fmp(versions, feed, doctor):
         out["status"] = "UNKNOWN"
         out["detail"] = "Couldn't read installed versions here. In FileMaker Pro: Help > About, or Get ( ApplicationVersion )."
     else:
-        c = vcmp(newest, need) if need else 0
-        out["status"] = "OK" if c is not None and c >= 0 else "BELOW ADT MINIMUM"
+        c = vcmp(newest, need) if need else None
+        out["status"] = ("UNKNOWN (ADT minimum not found)" if c is None else
+                         ("OK" if c >= 0 else "BELOW ADT MINIMUM"))
     if out.get("public_latest") and need and (vcmp(out["public_latest"], need) or 0) < 0:
-        out["note"] = (f"Claris's public feed lists {out['public_latest']}; ADT needs {need}, which is a Developer Preview "
-                       "build. Get it from the Developer Preview hub, not the public updater.")
+        out["note"] = (f"Claris's public feed lists {out['public_latest']}; the build ADT needs comes from Claris's "
+                       "preview program. Get it from the Developer Preview hub, not the public updater.")
     fm = (doctor or {}).get("fileMaker") or {}
     if fm:
         out["agent_access"] = fm.get("overallStatus")
@@ -407,7 +434,7 @@ def main():
             p(f"- {r['item']} [{r['where']}]: {r['installed']} vs latest {r['latest']} -> {r['status']}{extra}")
     ad = report["adt"]
     p("\n## Claris ADT")
-    p(f"- installed {ad.get('installed', '-')}, tested with {ad.get('tested_with')}, public latest {ad.get('latest_public') or 'none published'} -> {ad.get('status')}")
+    p(f"- installed {ad.get('installed', '-')}, public latest {ad.get('latest_public') or 'none published'} -> {ad.get('status')}")
     if ad.get("detail"):
         p(f"  {ad['detail']}")
     fp = report["filemaker_pro"]

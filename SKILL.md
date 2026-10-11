@@ -4,8 +4,8 @@ description: >-
   Routing directory and version check for the CadenceUX Claris FileMaker skill set. Maps each
   FileMaker development topic to the skill or tool that owns it, including the Claris Agentic
   Development Toolkit (ADT) for anything that reads or changes the FileMaker file, and reports
-  whether the stack is current: CadenceUX skills, ADT, FileMaker Pro (ADT needs 26.1 or newer)
-  and the ADT project's packages. Use when unsure which FileMaker skill handles a topic, when a
+  whether the stack is current: CadenceUX skills, ADT, the FileMaker Pro version ADT needs, and
+  the ADT project's packages. Use when unsure which FileMaker skill handles a topic, when a
   request spans several skills, at the start of FileMaker work in a session, or when asked
   whether skills, ADT or FileMaker are up to date. Not for answering the FileMaker question
   itself; it hands off to the owning skill.
@@ -16,7 +16,7 @@ compatibility: >-
   without one it checks skill versions only.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "2.1.0"
+  version: "2.1.1"
 ---
 
 # FileMaker skill directory
@@ -34,8 +34,10 @@ python3 <this skill's folder>/scripts/stack_check.py
 ```
 
 It compares installed CadenceUX skills with `versions.json` in the cadenceux-skills repo, and
-reports Claris ADT, FileMaker Pro against ADT's minimum (26.1), Agent Access, and the ADT
-project's versions (`adtMetadata`, `@adt/fmdapi`, TypeScript, Node). Summarise in one or two
+reports Claris ADT, FileMaker Pro against the minimum the installed ADT states, Agent Access,
+and the ADT project's versions (`adtMetadata`, `@adt/fmdapi`, TypeScript, Node). ADT is in
+Claris's preview programs: never write ADT or preview FileMaker Pro version numbers into files,
+commits or anything published; report them only to the user, from their own install. Summarise in one or two
 lines unless something needs action; give the full report when asked "is my stack up to date".
 Never run an update, install or `adt components reconcile` without the user's yes. No shell
 (claude.ai chat): check skill versions only, as described in the reference.
