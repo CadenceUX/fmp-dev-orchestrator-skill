@@ -1,7 +1,7 @@
 {
   "name": "fmp-dev-orchestrator",
   "displayName": "FileMaker Skill Orchestrator",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Routes FileMaker work to the CadenceUX skill or Claris ADT tool that owns it, and checks that the stack is current: skills, ADT, FileMaker Pro and the ADT project's packages.",
   "author": {
     "name": "Darrin Southern",

@@ -1,5 +1,16 @@
 # fmp-dev-orchestrator — Changelog
 
+## [2.1.2] — 2026-10-12
+
+### Changed
+
+- **`cadenceux-skill-creator` is in the `cadenceux` marketplace.** The routing table no longer
+  calls it a separate install and gives its plugin name (`cadenceux-skill-creator@cadenceux`).
+  `versions.json` lists it with the other skills; the stack check still reads the old
+  `separate_installs` key, so older marketplace copies keep working.
+- New eval case: skill-creator-route, passed on Haiku 5.5, Sonnet 5.5 and Opus 5.5
+  (`evals/results-2026-10-12-v2.1.2.md`).
+
 ## [2.1.1] — 2026-10-11
 
 ### Changed

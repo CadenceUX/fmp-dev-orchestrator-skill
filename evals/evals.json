@@ -1,6 +1,6 @@
 {
   "skill": "fmp-dev-orchestrator",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "notes": "Grade each answer against must / must_not. mode=adt assumes the Claris ADT plugin is installed; mode=shell assumes Claude Code with a shell; mode=chat assumes no code execution.",
   "cases": [
     {
@@ -118,6 +118,18 @@
       ],
       "must_not": [
         "writes ADT or preview FileMaker Pro version numbers into a file or commit"
+      ]
+    },
+    {
+      "id": "skill-creator-route",
+      "prompt": "Which skill do I use to build a new Claude skill for my team's FileMaker conventions, and how do I install it?",
+      "must": [
+        "routes to cadenceux-skill-creator",
+        "installs it from the cadenceux marketplace (cadenceux-skill-creator@cadenceux)"
+      ],
+      "must_not": [
+        "says it's a separate install outside the marketplace",
+        "answers the skill-building question itself instead of handing off"
       ]
     }
   ],

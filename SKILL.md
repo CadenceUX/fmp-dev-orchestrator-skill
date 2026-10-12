@@ -16,7 +16,7 @@ compatibility: >-
   without one it checks skill versions only.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "2.1.1"
+  version: "2.1.2"
 ---
 
 # FileMaker skill directory
@@ -71,7 +71,7 @@ as `fm-mcp-guide` and `filemaker-help`, appear in the skill list, or its MCP too
 | bBox plugin functions (`bBox_…`) | **`beezwax-bbox-plugin`** |
 | FileMaker Server in Docker on macOS: install, upgrade, certificates | **`cadenceux-fms-docker-setup`** |
 | OttoFMS on a Docker-hosted FileMaker Server | **`cadenceux-ottofms-docker-setup`** (needs `cadenceux-fms-docker-setup` first) |
-| Building or updating a Claude skill | **`cadenceux-skill-creator`** (installed separately) |
+| Building or updating a Claude skill | **`cadenceux-skill-creator`** (in the `cadenceux` marketplace: `cadenceux-skill-creator@cadenceux`) |
 | Is the stack current: skills, ADT, FileMaker Pro version, ADT project packages | **This skill**, Step 0 |
 | FileMaker Server administration, Admin API, security, WebDirect deployment, Claris Connect, Claris Studio | No dedicated skill: fetch the live guide from `https://help.claris.com/` |
 
