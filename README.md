@@ -32,15 +32,26 @@ go to the live guides on help.claris.com.
 
 ## Install
 
-Part of the `cadenceux` plugin marketplace:
+**Claude Code** (from the `cadenceux` plugin marketplace):
 
 ```bash
 claude plugin marketplace add https://github.com/CadenceUX/cadenceux-skills.git
 claude plugin install fmp-dev-orchestrator@cadenceux
 ```
 
-On claude.ai and Cowork: Customize → Plugins → Add marketplace from GitHub →
-`CadenceUX/cadenceux-skills`.
+**claude.ai and Cowork:** Customize → Plugins → Add marketplace from GitHub →
+`CadenceUX/cadenceux-skills`, then install **fmp-dev-orchestrator**.
+
+**Claude desktop app (macOS):** download [`fmp-dev-orchestrator.skill`](https://github.com/CadenceUX/fmp-dev-orchestrator-skill/releases/latest/download/fmp-dev-orchestrator.skill) and
+double-click it.
+
+**Claude.ai in a browser, as a single skill:** Customize → Skills → upload
+[`fmp-dev-orchestrator.zip`](https://github.com/CadenceUX/fmp-dev-orchestrator-skill/releases/latest/download/fmp-dev-orchestrator.zip).
+
+> Both files are attached to the latest [release](https://github.com/CadenceUX/fmp-dev-orchestrator-skill/releases).
+> Don't use GitHub's green **Code → Download ZIP** button or a release's **Source code (zip)**:
+> those are snapshots of the repository, not a packaged skill, and Claude won't install them
+> as one.
 
 ## Licence
 

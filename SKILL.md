@@ -16,7 +16,7 @@ compatibility: >-
   without one it checks skill versions only.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "2.1.2"
+  version: "2.1.3"
 ---
 
 # FileMaker skill directory
