@@ -1,5 +1,17 @@
 # fmp-dev-orchestrator — Changelog
 
+## [2.2.0] — 2026-11-19
+
+Retired. Replaced by [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill) 1.0.0,
+which carries this skill's routing and stack check, rewritten for Claris's FileMaker Agentic
+Development Kit (ADK), plus decision guides for agentic FileMaker work.
+
+### Changed
+
+- SKILL.md now only tells the user to install `cadenceux-dx` and remove this skill.
+- `references/` and `scripts/` removed; their successors are in `cadenceux-dx`.
+- `versions.json` lists this skill as retired, so the stack check reports it as `REMOVE`.
+
 ## [2.1.3] — 2026-10-16
 
 Packaging fix for GitHub installs, using `cadenceux-skill-creator` 2.1.2. No change to the skill's instructions or reference data.

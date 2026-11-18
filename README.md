@@ -1,4 +1,15 @@
-# fmp-dev-orchestrator
+# fmp-dev-orchestrator (retired)
+
+> **Retired 19 November 2026.** Replaced by [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill),
+> which routes FileMaker work to Claris's Agentic Development Kit (ADK) and the CadenceUX skills,
+> checks the stack, and guides the decisions around the code. Install that instead:
+>
+> ```bash
+> claude plugin install cadenceux-dx@cadenceux
+> claude plugin uninstall fmp-dev-orchestrator
+> ```
+
+The text below describes the last working release (2.1.3), for reference.
 
 A [Claude skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 that routes Claris FileMaker work to the skill or tool that owns it. With the Claris Agentic
