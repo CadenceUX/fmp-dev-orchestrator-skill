@@ -1,5 +1,34 @@
 # fmp-dev-orchestrator — Changelog
 
+## [3.0.2] — 2026-11-24
+
+Back in service as the same skill as [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill)
+1.0.2, under its earlier name, so the installs and links that name `fmp-dev-orchestrator` get
+the full skill rather than a pointer to install another one.
+
+### Changed
+
+- SKILL.md, `references/`, `scripts/` and `evals/evals.json` are now generated from the
+  cadenceux-dx repo by its `maintainer/build_orchestrator.py`. Only the name, version,
+  self-check links and the relationship note differ. Everything 2.1.3 did is there, rewritten
+  for Claris's ADK, plus the decision guides and Windows support in the stack check.
+- Version numbers follow cadenceux-dx's with the major number plus 2 (dx 1.0.2 is 3.0.2), so the
+  pair's releases line up.
+- If both skills are loaded, this one defers to `cadenceux-dx`, and both suggest uninstalling
+  one. The stack check notes when both are installed and doesn't list either as missing while
+  the other is there.
+- `versions.json` lists this skill again (it was on the `retired` list), so the stack check no
+  longer reports it as `REMOVE`.
+
+### Verified
+
+- Evals: `orchestrator-same-skill` passes on Haiku, Sonnet and Opus for both fmp-dev-orchestrator
+  3.0.2 and cadenceux-dx 1.0.2 (the released versions fail it on Sonnet), and this copy passes
+  `add-field-adk` on all three; see `evals/results-2026-11-24-v3.0.2.md`.
+- Stack check run on macOS against the new `versions.json`; the both, one and neither cases
+  tested.
+- `validate_skill.py` clean; `cadenceux-github` scanners clean.
+
 ## [2.2.0] — 2026-11-19
 
 Retired. Replaced by [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill) 1.0.0,

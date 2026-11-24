@@ -1,8 +1,8 @@
 {
   "name": "fmp-dev-orchestrator",
-  "displayName": "FileMaker Skill Orchestrator (retired)",
-  "version": "2.2.0",
-  "description": "Retired: replaced by cadenceux-dx (https://github.com/CadenceUX/cadenceux-dx-skill). This release only tells you to install it.",
+  "displayName": "FileMaker Skill Orchestrator",
+  "version": "3.0.2",
+  "description": "The same skill as cadenceux-dx, under its earlier name: routes Claris FileMaker work to the skill or ADK tool that owns it, checks the stack is current, and guides the decisions around the code (native or web viewer, data access, FileMaker 26.0.3 and earlier, reviews, linter tests, security and deployment). Install one of the two, not both.",
   "author": {
     "name": "Darrin Southern",
     "url": "https://cadenceux.com.au"
@@ -13,8 +13,9 @@
   "keywords": [
     "filemaker",
     "claris",
+    "adk",
     "routing",
-    "adt"
+    "developer-experience"
   ],
   "skills": [
     "./"

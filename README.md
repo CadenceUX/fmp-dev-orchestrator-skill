@@ -1,45 +1,49 @@
-# fmp-dev-orchestrator (retired)
-
-> **Retired 19 November 2026.** Replaced by [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill),
-> which routes FileMaker work to Claris's Agentic Development Kit (ADK) and the CadenceUX skills,
-> checks the stack, and guides the decisions around the code. Install that instead:
->
-> ```bash
-> claude plugin install cadenceux-dx@cadenceux
-> claude plugin uninstall fmp-dev-orchestrator
-> ```
-
-The text below describes the last working release (2.1.3), for reference.
+# fmp-dev-orchestrator
 
 A [Claude skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
-that routes Claris FileMaker work to the skill or tool that owns it. With the Claris Agentic
-Development Toolkit (ADT) installed, anything that reads or changes the FileMaker file goes
-through ADT directly, with no clipboard XML or copy-paste.
+for the developer experience of agentic Claris FileMaker work, with or without Claris's
+FileMaker Agentic Development Kit (ADK). It routes each task to the skill or tool that owns it,
+checks your stack is current, and guides the decisions around the code.
+
+**The same skill as [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill), under its
+earlier name.** From 3.0.2 its files are generated from the cadenceux-dx repo, so the two never
+differ in what they do. Install one, not both; either name works.
 
 Built and maintained by [Darrin Southern](https://www.linkedin.com/in/darrin-southern/) from [CadenceUX](https://cadenceux.com.au).
 
-## What it routes
+## What it does
+
+**Routes the work.** Anything that reads or changes the FileMaker file goes through ADK when
+it's available. Everything else goes to the skill that owns it:
 
 | Topic | Owner |
 |---|---|
-| Schema, scripts, layouts, value lists, custom functions, live SQL | Claris ADT |
-| Functions, script steps, field types, error codes, Data API, OData | `claris-filemaker-pro` |
-| Scripting conventions and patterns | `fmp-dev-design-patterns` |
-| BaseElements plugin | `goya-be-plugin` |
-| MBS plugin | `monkeybread-mbs-plugin` |
-| bBox plugin | `beezwax-bbox-plugin` |
-| FileMaker Server in Docker | `cadenceux-fms-docker-setup` |
-| OttoFMS in Docker | `cadenceux-ottofms-docker-setup` |
+| Schema, scripts, layouts, value lists, custom functions, live SQL, web viewer apps, standards | Claris ADK |
+| Functions, script steps, error codes, Data API, OData, ExecuteSQL | `claris-filemaker-pro` |
+| CadenceUX conventions and patterns, client standards | `fmp-dev-design-patterns` with the [`cadenceux` pack](https://github.com/CadenceUX/cadenceux-filemaker-standards) |
+| BaseElements, MBS and bBox plug-ins | `goya-be-plugin`, `monkeybread-mbs-plugin`, `beezwax-bbox-plugin` |
+| FileMaker Server and OttoFMS in Docker | `cadenceux-fms-docker-setup`, `cadenceux-ottofms-docker-setup` |
+| Server security checks | `cadenceux-fms-security` |
+| GitHub, and scanning skills before you install them | `cadenceux-github` |
 | Building Claude skills | `cadenceux-skill-creator` |
-| Is the stack current | this skill (`scripts/stack_check.py`) |
 
-It also checks the stack once per session: installed CadenceUX skills against the latest
-releases, Claris ADT, the FileMaker Pro version ADT needs, and the ADT project's package
-versions, all read from your own install. Read-only: it reports and asks, it never updates anything itself. Ask "is my
-FileMaker stack up to date?" for the full report.
+**Checks the stack**, once per session and read-only: installed CadenceUX skills, ADK against
+Claris's latest, FileMaker Pro against ADK's minimum (26.1; hosted files need FileMaker Server
+26.1.1), and your ADK project's standards pack and packages. Ask "is my FileMaker stack up to
+date?" for the full report. It never updates anything without asking.
 
-Topics with no dedicated skill (Server administration, security, Claris Connect, Claris Studio)
-go to the live guides on help.claris.com.
+**Guides the decisions:**
+
+- FileMaker 26.0.3 and earlier: what extra code a job needs, and when to upgrade
+- Native layouts, a web viewer app, or hybrid
+- Relationships, ExecuteSQL, the Data API or OData, or native scripts
+- Reviewing an existing system: the questions to ask first
+- Which linter tests to build
+- Security and deployment review
+
+**And how the work runs:** knowledge delegation, agentic time, the four hats (analyst,
+architect, developer, tester), briefing helper agents, and reviewing again when the harness
+changes.
 
 ## Install
 
@@ -49,6 +53,8 @@ go to the live guides on help.claris.com.
 claude plugin marketplace add https://github.com/CadenceUX/cadenceux-skills.git
 claude plugin install fmp-dev-orchestrator@cadenceux
 ```
+
+If `cadenceux-dx` is also installed, keep one: they're the same skill.
 
 **claude.ai and Cowork:** Customize → Plugins → Add marketplace from GitHub →
 `CadenceUX/cadenceux-skills`, then install **fmp-dev-orchestrator**.
@@ -63,6 +69,12 @@ double-click it.
 > Don't use GitHub's green **Code → Download ZIP** button or a release's **Source code (zip)**:
 > those are snapshots of the repository, not a packaged skill, and Claude won't install them
 > as one.
+
+## Changes
+
+Make every change in [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill), then run
+its `maintainer/build_orchestrator.py` against this repo. Only this README and the CHANGELOG are
+edited here.
 
 ## Licence
 
