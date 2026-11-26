@@ -1,11 +1,17 @@
 # fmp-dev-orchestrator
 
+> **Retired, 27 November 2026.** Replaced by
+> [`cadenceux-developer-experience`](https://github.com/CadenceUX/cadenceux-developer-experience-skill),
+> which carries this skill's routing, stack check and decision guides and now also directs the
+> work as agile sprints with stage gates. Uninstall `fmp-dev-orchestrator` and install
+> `cadenceux-developer-experience@cadenceux`. This repository is archived and no longer updated.
+
 A [Claude skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 for the developer experience of agentic Claris FileMaker work, with or without Claris's
 FileMaker Agentic Development Kit (ADK). It routes each task to the skill or tool that owns it,
 checks your stack is current, and guides the decisions around the code.
 
-**The same skill as [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill), under its
+**The same skill as [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-developer-experience-skill), under its
 earlier name.** From 3.0.2 its files are generated from the cadenceux-dx repo, so the two never
 differ in what they do. Install one, not both; either name works.
 
@@ -72,7 +78,7 @@ double-click it.
 
 ## Changes
 
-Make every change in [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill), then run
+Make every change in [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-developer-experience-skill), then run
 its `maintainer/build_orchestrator.py` against this repo. Only this README and the CHANGELOG are
 edited here.
 
