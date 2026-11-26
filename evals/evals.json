@@ -1,7 +1,7 @@
 {
   "skill": "fmp-dev-orchestrator",
-  "version": "3.0.2",
-  "notes": "Generated from cadenceux-dx 1.0.2's evals by maintainer/build_orchestrator.py. Each case is answered in a fresh subagent with the skill folder only (no evals/), text only. Graded against must / must_not. Baseline: fmp-dev-orchestrator 2.1.3.",
+  "version": "4.0.0",
+  "notes": "Each case is answered in a fresh subagent with the skill folder only (no evals/, CHANGELOG, README or plugin manifest), text only, nothing run, ADK available, stack check taken as already run unless the case is about it, the Skill tool not used. Graded against must / must_not. Baseline for 4.0.0: the released fmp-dev-orchestrator 3.0.2 on Sonnet.",
   "cases": [
     {
       "id": "add-field-adk",
@@ -37,19 +37,6 @@
       ],
       "must_not": [
         "routes to a skill that doesn't exist"
-      ]
-    },
-    {
-      "id": "orchestrator-same-skill",
-      "mode": "adk",
-      "prompt": "I've got both fmp-dev-orchestrator and cadenceux-dx installed. Do I need both?",
-      "must": [
-        "says they're the same skill under two names",
-        "suggests keeping one and uninstalling the other"
-      ],
-      "must_not": [
-        "says fmp-dev-orchestrator is retired",
-        "says the two do different things"
       ]
     },
     {
@@ -109,118 +96,70 @@
       "prompt": "Which skill do I use to build a new Claude skill for my team's FileMaker conventions, and how do I install it?",
       "must": [
         "routes to cadenceux-skill-creator",
-        "installs it from the cadenceux marketplace (cadenceux-skill-creator@cadenceux)"
+        "gives the install line from the cadenceux marketplace: claude plugin install cadenceux-skill-creator@cadenceux"
       ],
       "must_not": [
-        "says it's a separate install outside the marketplace",
+        "says it can't give the install command",
         "answers the skill-building question itself instead of handing off"
       ]
     },
     {
-      "id": "old-version",
-      "mode": "no-adk",
-      "prompt": "My client is on FileMaker 26.0.3 and needs a script that sets a variable whose name comes from a field. What do I need?",
-      "must": [
-        "reads before-adk.md",
-        "gives the 26.0.3 workaround (Evaluate or branching)",
-        "notes Set Variable by Name in 26.1",
-        "says ADK needs 26.1, so the steps are entered by hand"
-      ],
-      "must_not": [
-        "generates clipboard XML"
-      ]
-    },
-    {
-      "id": "webviewer-or-native",
-      "mode": "adk",
-      "prompt": "Should I build the new bookings screen as a web viewer app? Users are on FileMaker Go and WebDirect.",
-      "must": [
-        "reads native-webviewer-hybrid.md",
-        "asks or names which interaction native layouts can't do",
-        "names the costs (toolchain, two skill sets, testing on Go and WebDirect)",
-        "defaults to native or hybrid unless an interaction requires the app"
-      ],
-      "must_not": [
-        "recommends a web viewer app without naming the need"
-      ]
-    },
-    {
-      "id": "data-access",
+      "id": "orchestrator-vs-dx",
       "mode": "any",
-      "prompt": "I need a total of open invoices per customer on the dashboard. Relationship or ExecuteSQL?",
+      "prompt": "What's the difference between fmp-dev-orchestrator and cadenceux-developer-experience? Do I need both?",
       "must": [
-        "reads data-access.md",
-        "weighs a relationship against ExecuteSQL with their costs",
-        "mentions ExecuteSQL's slowdown with uncommitted records or in frequently evaluated places"
+        "fmp-dev-orchestrator selects the skill or ADK tool that owns each task and runs the stack check",
+        "cadenceux-developer-experience runs the work: the stages, the thinking hats, the gates before deploy, and the decision guides",
+        "they work together: install both",
+        "cadenceux-dx is retired: cadenceux-developer-experience replaces it"
       ],
       "must_not": [
-        "suggests the Data API from inside the client"
+        "says they're the same skill",
+        "says to install only one of them"
       ]
     },
     {
-      "id": "review-questions",
+      "id": "process-routes-to-dx",
       "mode": "adk",
-      "prompt": "Review this client's FileMaker solution for me.",
+      "prompt": "The agent's finished the bookings changes and the client wants them live tonight. Which skills do I need for that?",
       "must": [
-        "reads reviewing-systems.md",
-        "asks why the review is happening and what done looks like before reading",
-        "asks for a copy rather than production"
+        "cadenceux-developer-experience for the gates before deploy (QA testing, review, the release checklist)",
+        "cadenceux-fms-security for the server side of the security sweep"
       ],
       "must_not": [
-        "starts listing findings before asking"
+        "writes its own deploy checklist instead of routing",
+        "says it's fine to deploy tonight"
       ]
     },
     {
-      "id": "linter",
+      "id": "webviewer-route",
       "mode": "adk",
-      "prompt": "I want automated checks on everything the agent writes. What should I test?",
+      "prompt": "I want to add a web viewer app for the bookings dashboard. Where do I start?",
       "must": [
-        "reads linter-tests.md",
-        "one rule per test, each from a written standard",
-        "passing and failing examples",
-        "advisory rules only raise notes"
+        "cadenceux-developer-experience to decide native, web viewer or both first",
+        "then ADK's adk-webviewer-app to build it",
+        "claris-filemaker-pro for the scripts it calls"
       ],
       "must_not": [
-        "invents rules not in a standard"
+        "scaffolds the app before the decision"
       ]
-    },
-    {
-      "id": "deploy",
-      "mode": "adk",
-      "prompt": "We're ready to put the agent-built changes into production tonight. What should I check?",
-      "must": [
-        "reads security-deployment.md",
-        "backup and a way back",
-        "tested on a copy on each client",
-        "hosted files need FileMaker Server 26.1.1",
-        "routes the server check to cadenceux-fms-security"
-      ],
-      "must_not": [
-        "suggests the agent work directly on production"
-      ]
-    },
-    {
-      "id": "four-hats",
-      "mode": "any",
-      "prompt": "With the agent writing most of the code now, what should I spend my time on?",
-      "must": [
-        "reads working-agentically.md",
-        "the four hats: analyst, architect, developer, tester",
-        "most time on needs analysis and design, then testing"
-      ],
-      "must_not": []
     }
   ],
   "near_misses": [
     {
+      "id": "direct-syntax",
+      "prompt": "What's the syntax of JSONSetElement?",
+      "expect": "claris-filemaker-pro directly; fmp-dev-orchestrator isn't needed"
+    },
+    {
+      "id": "sprint-plan",
+      "prompt": "Write the sprint plan for the bookings screen.",
+      "expect": "cadenceux-developer-experience, not fmp-dev-orchestrator"
+    },
+    {
       "id": "excel",
       "prompt": "Make me a pivot table in Excel.",
       "expect": "not triggered"
-    },
-    {
-      "id": "direct-syntax",
-      "prompt": "What's the syntax of JSONSetElement?",
-      "expect": "claris-filemaker-pro directly; cadenceux-dx isn't needed"
     }
   ]
 }

@@ -151,16 +151,20 @@ def check_skills(versions, wanted):
     latest.update(versions.get("separate_installs", {}))
     outside = versions.get("outside_set", {})
     found = installed_skills(set(latest) | set(versions.get("retired", {})) | set(outside))
-    # "same_as": one skill published under two names (fmp-dev-orchestrator is cadenceux-dx's
-    # earlier name). Only one is needed, so neither is listed as missing while the other is
-    # installed, and both being installed gets a note.
-    twin = {}
+    # "same_as": one skill listed under several names in versions.json (each entry's same_as names
+    # the current one). Only one is needed, so another name is never listed as missing, the
+    # current one isn't while any name is installed, and more than one installed gets a note.
+    group = {}
     for n, d in latest.items():
         if isinstance(d, dict) and d.get("same_as"):
-            twin[n], twin[d["same_as"]] = d["same_as"], n
+            root = d["same_as"]
+            members = group.setdefault(root, {root})
+            members.add(n)
+            group[n] = members
     for name in sorted(set(latest) | set(found)):
         copies = found.get(name, [])
-        if not copies and name in twin and (found.get(twin[name]) or latest.get(name, {}).get("same_as")):
+        others = sorted(group.get(name, {name}) - {name})
+        if not copies and others and (latest.get(name, {}).get("same_as") or any(found.get(o) for o in others)):
             continue
         if name in outside:
             if copies:
@@ -186,8 +190,9 @@ def check_skills(versions, wanted):
             n = sum(1 for x in copies if x["where"] == where)
             rows.append({"item": name, "where": where, "installed": c["version"], "latest": want, "status": status,
                          "copies": n, "versions_seen": sorted({x["version"] or "?" for x in copies if x["where"] == where})})
-            if name in twin and found.get(twin[name]):
-                rows[-1]["note"] = f"same skill as {twin[name]}, which is also installed: keep one"
+            also = [o for o in others if found.get(o)]
+            if also:
+                rows[-1]["note"] = f"same skill as {', '.join(also)}, also installed: keep one"
     return rows
 
 
@@ -406,7 +411,7 @@ def main():
     adk_info, doctor = check_adk(versions, project)
     me = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "SKILL.md")
     my_name, my_ver = frontmatter(me)
-    my_latest = (versions.get("skills", {}).get(my_name or "cadenceux-dx") or {}).get("version")
+    my_latest = (versions.get("skills", {}).get(my_name or "fmp-dev-orchestrator") or {}).get("version")
     st = vcmp(my_ver, my_latest)
     report = {
         "this_skill": {"item": f"{my_name} (running copy)", "installed": my_ver, "latest": my_latest,

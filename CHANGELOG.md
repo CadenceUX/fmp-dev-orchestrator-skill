@@ -1,4 +1,38 @@
-# fmp-dev-orchestrator — Changelog
+# fmp-dev-orchestrator: Changelog
+
+## [4.0.0] - 2026-11-27
+
+The skill selector again, on its own: it picks the skill or ADK tool for each task and checks
+the stack. Running the work (stages, thinking hats, gates before deploy) and the decisions
+around the code belong to `cadenceux-developer-experience`, which replaces `cadenceux-dx`.
+Major version because the decision guides and the way of working move out.
+
+### Changed
+
+- No longer generated from another repo: this repo is the source again.
+- SKILL.md: Steps 0 to 2 (stack check, is ADK available, select the skill), requests that span
+  skills, disclosure. The routing table sends how the work runs, and the decisions around the
+  code, to `cadenceux-developer-experience`.
+- `scripts/stack_check.py` and `references/stack-check.md` are the latest from
+  `cadenceux-developer-experience` 2.0.0, with this skill's name.
+
+### Added
+
+- **Installing an owning skill:** whenever it names a skill, it gives the install line from the
+  `cadenceux` marketplace, instead of declining to guess the command.
+- Routes for putting changes live (`cadenceux-developer-experience` for the gates,
+  `cadenceux-fms-security` for the server) and for `cadenceux-plugin-creator`.
+
+### Removed
+
+- The decision guides (`before-adk.md`, `data-access.md`, `linter-tests.md`,
+  `native-webviewer-hybrid.md`, `reviewing-systems.md`, `security-deployment.md`) and
+  `working-agentically.md`: they stay in `cadenceux-developer-experience`.
+- "The same skill as cadenceux-dx": it isn't any more.
+
+### Verified
+
+- Evals: see `evals/results-2026-11-27-v4.0.0.md`, against the released 3.0.2.
 
 ## [3.0.2] — 2026-11-24
 
